@@ -1,0 +1,5 @@
+/vendor/
+
+# A library pins nothing: consumers resolve these constraints against their own
+# graphs, so committing a lock here would only ever be misleading.
+/composer.lock

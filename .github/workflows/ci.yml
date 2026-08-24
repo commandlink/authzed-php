@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # The lower bound is what the Yii application runs; the upper is what the
+        # Laravel API requires. Both consumers have to keep working.
+        php: ['8.3', '8.4', '8.5']
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          # ext-grpc is a hard requirement of the package, so install it rather
+          # than working around it — otherwise the service clients go untested.
+          extensions: grpc
+          coverage: none
+
+      - run: composer validate --strict
+
+      - run: composer install --prefer-dist --no-progress
+
+      # The whole risk this package carries is a regeneration that drops or
+      # renames something a consumer calls. That is exactly what this catches.
+      - run: composer verify

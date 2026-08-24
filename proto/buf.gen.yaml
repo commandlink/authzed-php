@@ -1,0 +1,16 @@
+# Generates PHP message classes and gRPC service clients for the SpiceDB
+# (Authzed) v1 API into gen/.
+#
+# Driven by scripts/generate-authzed-stubs.sh — do not run `buf generate`
+# against this template directly. The descriptor set has to be pre-processed
+# first to remove proto2 dependencies the PHP generator cannot compile
+# (see that script's header for the full explanation).
+#
+# `out` is resolved relative to the working directory, so the script always
+# invokes buf from the repository root.
+version: v2
+plugins:
+  - remote: buf.build/protocolbuffers/php:v36.0
+    out: gen
+  - remote: buf.build/grpc/php:v1.83.0
+    out: gen

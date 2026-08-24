@@ -1,0 +1,30 @@
+{
+    "name": "commandlink/authzed-php",
+    "description": "Generated PHP gRPC client stubs for the SpiceDB (Authzed) v1 API.",
+    "type": "library",
+    "license": "proprietary",
+    "require": {
+        "php": "^8.3",
+        "ext-grpc": "*",
+        "grpc/grpc": "^1.57",
+        "google/protobuf": "^4.33",
+        "google/common-protos": "^4.14"
+    },
+    "autoload": {
+        "psr-4": {
+            "Authzed\\": "gen/Authzed/",
+            "GPBMetadata\\Authzed\\": "gen/GPBMetadata/Authzed/"
+        }
+    },
+    "scripts": {
+        "verify": "php scripts/verify_authzed_stubs.php",
+        "generate": "bash scripts/generate_authzed_stubs.sh"
+    },
+    "scripts-descriptions": {
+        "verify": "Smoke-check that the committed stubs load and expose what callers depend on.",
+        "generate": "Regenerate gen/ from the published Authzed protos. Requires the buf CLI."
+    },
+    "config": {
+        "sort-packages": true
+    }
+}
