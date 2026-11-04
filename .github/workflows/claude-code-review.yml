@@ -1,0 +1,29 @@
+# Claude AI PR review via the shared reusable workflow in commandlink/github-workflows.
+# The reviewer follows REVIEW.md at the repo root; edit that to steer it, not this file.
+name: Claude Code Review
+
+on:
+  pull_request:
+    # `synchronize` re-reviews each push to a non-draft PR (draft pushes skip).
+    types: [opened, synchronize, ready_for_review, reopened]
+
+# A newer push cancels the in-flight review of the older commit.
+concurrency:
+  group: claude-review-${{ github.event.pull_request.number }}-${{ github.event.comment.id || 'push' }}
+  cancel-in-progress: true
+
+jobs:
+  review:
+    permissions:
+      contents: read
+      pull-requests: write
+      # Required: a caller's permissions cap the reusable workflow's, and without
+      # this the OIDC token is withheld ("Could not fetch an OIDC token").
+      id-token: write
+    uses: commandlink/github-workflows/.github/workflows/claude-code-review.yml@main
+    with:
+      # Also run anthropics/claude-code-security-review as a parallel job.
+      # No `model:` here, so the shared workflow's default model is used.
+      security_review: true
+    secrets:
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
