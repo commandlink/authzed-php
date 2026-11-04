@@ -7,7 +7,7 @@
         "php": "^8.3",
         "ext-grpc": "*",
         "grpc/grpc": "^1.57",
-        "google/protobuf": "^4.33",
+        "google/protobuf": "^4.33 || ^5.34",
         "google/common-protos": "^4.14"
     },
     "autoload": {
